@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from . import metrics
 import json
+from django.contrib.auth.decorators import login_required
 
 
+@login_required(login_url='login')
 def home(request):
     product_metrics = metrics.get_product_metrics()
     sales_metrics = metrics.get_sales_metrics()
@@ -18,8 +20,6 @@ def home(request):
         'daily_sales_quantity_data': json.dumps(daily_sales_quantity_data),
         'product_count_by_category': json.dumps(graphic_product_category_metric),
         'product_count_by_brand': json.dumps(graphic_product_brand_metric),
-
-
     }
     
     return render(request, 'home.html', context)
